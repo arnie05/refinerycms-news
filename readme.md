@@ -25,6 +25,8 @@ Include the latest [gem](http://rubygems.org/gems/refinerycms-news) into your Re
 gem "refinerycms-news", '~> 2.1.0'
 ```
 
+Note: if the [refinerycms-page-images](https://github.com/refinery/refinerycms-page-images) extension is also installed, make sure `gem refinerycms-news` comes before `gem 'refinerycms-page-images'`.
+
 Then type the following at command line inside your Refinery CMS application's root directory:
 
     bundle install

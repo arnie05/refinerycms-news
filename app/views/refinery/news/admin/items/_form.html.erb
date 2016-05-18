@@ -20,10 +20,30 @@
     <%= f.datetime_select :expiration_date, :start_year => Time.now.year,
                                             :include_blank => true %>
   </div>
-
+  
   <div class='field'>
-    <%= f.label :body %>
-    <%= f.text_area :body, :rows => "20", :class => "wymeditor widest" %>
+    <div id='page-tabs' class='clearfix ui-tabs ui-widget ui-widget-content ui-corner-all'>
+      <ul id='page_parts'>
+        <li class='ui-state-default ui-state-active'>
+          <%= link_to t('body', :scope => 'activerecord.attributes.refinery/news/item'), "#page_part_body" %>
+        </li>
+        <% Refinery::News.tabs.each_with_index do |tab, tab_index| %>
+          <li class='ui-state-default' id="custom_<%= tab.name %>_tab">
+            <%= link_to tab.name.titleize, "#custom_tab_#{tab_index}" %>
+          </li>
+        <% end %>
+      </ul>
+
+      <div id='page_part_editors'>
+        <% part_index = -1 %>
+        <%= render 'body_part', :f => f, :part_index => (part_index += 1) -%>          
+        <% Refinery::News.tabs.each_with_index do |tab, tab_index| %>
+          <div class='page_part' id='<%= "custom_tab_#{tab_index}" %>'>
+            <%= render tab.partial, :f => f %>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
 
   <div class='field'>
@@ -38,3 +58,5 @@
              :delete_confirmation => t('shared.admin.delete.message', :title => @item.title) %>
 
 <% end %>
+
+<% content_for :javascripts, javascript_include_tag('refinery/news/backend') %>
